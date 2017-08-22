@@ -13,12 +13,13 @@ class ElasticquentResultCollection extends \Illuminate\Database\Eloquent\Collect
     /**
      * Create a new instance containing Elasticsearch results
      *
-     * @todo Remove backwards compatible detection at further point
+     * @todo       Remove backwards compatible detection at further point
      * @deprecated Initialize with params ($results, $instance) is deprecated,
      *    please use Model::hydrateElasticsearchResult($results).
      *
-     * @param  mixed  $items
-     * @param  array  $meta
+     * @param  mixed $items
+     * @param  array $meta
+     *
      * @return void
      */
     public function __construct($items, $meta = null)
@@ -43,6 +44,7 @@ class ElasticquentResultCollection extends \Illuminate\Database\Eloquent\Collect
      * Set the result meta.
      *
      * @param array $meta
+     *
      * @return $this
      */
     public function setMeta(array $meta)
@@ -103,7 +105,7 @@ class ElasticquentResultCollection extends \Illuminate\Database\Eloquent\Collect
      */
     public function timedOut()
     {
-        return (bool) $this->timed_out;
+        return (bool)$this->timed_out;
     }
 
     /**
@@ -117,6 +119,16 @@ class ElasticquentResultCollection extends \Illuminate\Database\Eloquent\Collect
     public function getHits()
     {
         return $this->hits;
+    }
+
+    /**
+     * Get size of hits array
+     *
+     * @return int
+     */
+    public function getSizeHitsArray()
+    {
+        return count($this->getHits()['hits']);
     }
 
     /**
@@ -142,7 +154,7 @@ class ElasticquentResultCollection extends \Illuminate\Database\Eloquent\Collect
     public function paginate($pageLimit = 25)
     {
         $page = Paginator::resolveCurrentPage() ?: 1;
-       
+
         return new Paginator($this->items, $this->hits, $this->totalHits(), $pageLimit, $page, ['path' => Paginator::resolveCurrentPath()]);
     }
 }
